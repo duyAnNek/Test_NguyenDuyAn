@@ -1,0 +1,103 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual env
+.venv/
+venv/
+ENV/
+env/
+
+# Pytest / coverage / linters
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# --- IDE / OS ---
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# --- Logs / secrets ---
+*.log
+.env
+.env.*
+
+# --- Project: artifacts (train, inference, export) ---
+outputs/
+wandb/
+
+# Ultralytics / train: không commit cả trees/runs/, nhưng giữ báo cáo tóm tắt train:
+runs/*
+!runs/detect/
+
+runs/detect/*
+!runs/detect/runs/
+
+runs/detect/runs/*
+!runs/detect/runs/pothole/
+
+runs/detect/runs/pothole/*
+!runs/detect/runs/pothole/train_runs/
+
+runs/detect/runs/pothole/train_runs/*
+!runs/detect/runs/pothole/train_runs/results.csv
+!runs/detect/runs/pothole/train_runs/results.png
+
+# Models & weights (dùng release/LFS hoặc tả riêng nếu cần)
+*.onnx
+*.pt
+*.pth
+*.bin
+*.engine
+*.rknn
+
+# Video / media lớn
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+
+# Depth Anything (thường clone riêng; tránh submodule lồng nhau)
+Depth-Anything-V2/
+
+# --- Dataset: bật các dòng sau nếu không muốn đẩy ảnh/nhãn lên GitHub ---
+# data/images/
+# data/labels/
+
+# --- Android (android-onnx-sample) ---
+**/build/
+**/.gradle/
+**/local.properties
+**/*.apk
+**/captures/
+**/.cxx/
+**/*.iml

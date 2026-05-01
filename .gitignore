@@ -1,0 +1,37 @@
+# Dùng khi `git init` tại thư mục workspace cha (bao gồm `pothole/`).
+# Nếu repo chỉ là `pothole/`, bỏ qua file này — chỉ cần `pothole/.gitignore`.
+
+/.cursor/
+
+pothole/outputs/
+pothole/wandb/
+
+# Giống pothole/.gitignore: bỏ qua runs nhưng cho phép hai file báo cáo train.
+pothole/runs/*
+!pothole/runs/detect/
+
+pothole/runs/detect/*
+!pothole/runs/detect/runs/
+
+pothole/runs/detect/runs/*
+!pothole/runs/detect/runs/pothole/
+
+pothole/runs/detect/runs/pothole/*
+!pothole/runs/detect/runs/pothole/train_runs/
+
+pothole/runs/detect/runs/pothole/train_runs/*
+!pothole/runs/detect/runs/pothole/train_runs/results.csv
+!pothole/runs/detect/runs/pothole/train_runs/results.png
+pothole/Depth-Anything-V2/
+pothole/**/*.pt
+pothole/**/*.pth
+pothole/**/*.mp4
+pothole/**/*.mov
+pothole/**/*.avi
+
+**/__pycache__/
+**/.venv/
+**/ARCHITECTURE.md
+**/FAILURE_ANALYSIS.md
+**/test.md
+architecture.drawio

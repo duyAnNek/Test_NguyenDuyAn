@@ -1,0 +1,9 @@
+ultralytics
+onnxruntime
+opencv-python
+numpy
+pyyaml
+pandas
+matplotlib
+tqdm
+scikit-learn

@@ -1,0 +1,9 @@
+path: D:\NguyenDuyAn_test\pothole\data
+train: images/train
+val: images/val
+nc: 3
+names:
+- minor
+- moderate
+- severe
+test: images/test
