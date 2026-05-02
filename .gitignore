@@ -44,3 +44,36 @@ htmlcov/
 
 # --- optional: local venv inside workspace (uncomment if used) ---
 # .venv/
+
+# --- Cursor / pothole runs & weights ---
+/.cursor/
+
+pothole/outputs/
+pothole/wandb/
+
+pothole/runs/*
+!pothole/runs/detect/
+
+pothole/runs/detect/*
+!pothole/runs/detect/runs/
+
+pothole/runs/detect/runs/*
+!pothole/runs/detect/runs/pothole/
+
+pothole/runs/detect/runs/pothole/*
+!pothole/runs/detect/runs/pothole/train_runs/
+
+pothole/runs/detect/runs/pothole/train_runs/*
+!pothole/runs/detect/runs/pothole/train_runs/results.csv
+!pothole/runs/detect/runs/pothole/train_runs/results.png
+pothole/Depth-Anything-V2/
+pothole/**/*.pt
+pothole/**/*.pth
+pothole/**/*.mp4
+pothole/**/*.mov
+pothole/**/*.avi
+
+**/ARCHITECTURE.md
+**/FAILURE_ANALYSIS.md
+**/test.md
+**architecture.drawio

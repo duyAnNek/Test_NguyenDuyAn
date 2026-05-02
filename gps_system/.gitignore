@@ -1,0 +1,49 @@
+# ROS 2 Python workspace (gps_system) — colcon + Python artefacts
+
+# --- colcon / ROS 2 workspace (never commit) ---
+build/
+install/
+log/
+
+# --- Python bytecode & packaging ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+*.egg
+dist/
+wheels/
+pip-wheel-metadata/
+
+# --- large binaries & datasets ---
+*.onnx
+*.pt
+*.pth
+*.engine
+*.trt
+*.bag
+*.db3
+
+# --- IDE & OS ---
+.idea/
+.vscode/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+# --- pytest / coverage ---
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# --- optional: local venv inside workspace (uncomment if used) ---
+# .venv/
+
+# Duplicate pothole tree under gps_system: do not commit image datasets here.
+pothole/data/

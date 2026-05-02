@@ -1,5 +1,4 @@
 ultralytics
-torch
 onnxruntime
 opencv-python
 numpy

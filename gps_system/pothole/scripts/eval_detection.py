@@ -1,9 +1,7 @@
 from __future__ import annotations
 
 import argparse
-import csv
 import json
-import shutil
 from pathlib import Path
 
 import yaml
@@ -53,78 +51,14 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def _export_flat_artifacts(metrics: object, output_dir: Path) -> None:
-    """Copy/rename Ultralytics val outputs into output_dir (stable names for reports)."""
-    save_dir = Path(getattr(metrics, "save_dir", output_dir / "ultralytics_val"))
-    if not save_dir.is_dir():
-        save_dir = output_dir / "ultralytics_val"
-
-    # confusion_matrix.png
-    cm = save_dir / "confusion_matrix.png"
-    if cm.is_file():
-        shutil.copy2(cm, output_dir / "confusion_matrix.png")
-
-    # results.png: Ultralytics 8.x saves PR curves as BoxPR_curve.png (training still uses results.png from CSV).
-    pr = save_dir / "BoxPR_curve.png"
-    if pr.is_file():
-        shutil.copy2(pr, output_dir / "results.png")
-
-    # results.csv: per-class + aggregate (mAP@0.5 = mAP50)
-    rows: list[dict[str, object]] = []
-    try:
-        rows.extend(metrics.summary())
-    except Exception:
-        pass
-
-    mp, mr, m50, m5095 = (
-        float(metrics.box.mp),
-        float(metrics.box.mr),
-        float(metrics.box.map50),
-        float(metrics.box.map),
-    )
-    f1 = (2.0 * mp * mr / (mp + mr)) if (mp + mr) > 1e-12 else 0.0
-    nt_img = getattr(metrics, "nt_per_image", None)
-    nt_cls = getattr(metrics, "nt_per_class", None)
-    n_img = int(nt_img.sum()) if nt_img is not None else 0
-    n_inst = int(nt_cls.sum()) if nt_cls is not None else 0
-
-    rows.append(
-        {
-            "Class": "all",
-            "Images": n_img,
-            "Instances": n_inst,
-            "Box-P": round(mp, 5),
-            "Box-R": round(mr, 5),
-            "Box-F1": round(f1, 5),
-            "mAP50": round(m50, 5),
-            "mAP50-95": round(m5095, 5),
-        }
-    )
-
-    if rows:
-        fieldnames = list(rows[0].keys())
-        with (output_dir / "results.csv").open("w", newline="", encoding="utf-8") as f:
-            w = csv.DictWriter(f, fieldnames=fieldnames)
-            w.writeheader()
-            w.writerows(rows)
-
-
 def main() -> None:
     args = parse_args()
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
     data_yaml_path = Path(args.data).resolve()
-    data_cfg = yaml.safe_load(data_yaml_path.read_text(encoding="utf-8")) or {}
-    data_nc = int(data_cfg.get("nc", 0) or 0)
 
     model = YOLO(args.weights)
-    if data_nc and len(model.names) != data_nc:
-        print(
-            f"WARNING: weights define {len(model.names)} classes but {data_yaml_path} has nc={data_nc}. "
-            "Use a checkpoint trained on this dataset (e.g. runs/detect/.../weights/best.pt) for meaningful "
-            "mAP@0.5 and class names in results.csv."
-        )
     # Plots=True: metrics curves + val_batch*_labels/pred.jpg for the FIRST 3 batches only (Ultralytics default).
     # project/name puts those under output_dir so they are easy to find.
     metrics = model.val(
@@ -161,26 +95,11 @@ def main() -> None:
     results = {
         "weights": str(Path(args.weights).resolve()),
         "device": args.device,
-        "split": args.split,
         "mAP@0.5": float(metrics.box.map50),
         "mAP@0.5:0.95": float(metrics.box.map),
         "precision": float(metrics.box.mp),
         "recall": float(metrics.box.mr),
     }
-
-    _export_flat_artifacts(metrics, output_dir)
-
-    summary_txt = (
-        f"Pothole detection — split: {args.split}\n"
-        f"mAP@0.5:     {results['mAP@0.5']:.6f}\n"
-        f"mAP@0.5:0.95: {results['mAP@0.5:0.95']:.6f}\n"
-        f"Precision:   {results['precision']:.6f}\n"
-        f"Recall:      {results['recall']:.6f}\n"
-        f"\nArtifacts in {output_dir.resolve()}:\n"
-        f"  - detection_metrics.json, map50.txt, map50_summary.txt\n"
-        f"  - results.png (PR curves), confusion_matrix.png, results.csv\n"
-    )
-    (output_dir / "map50_summary.txt").write_text(summary_txt, encoding="utf-8")
 
     (output_dir / "detection_metrics.json").write_text(
         json.dumps(results, indent=2),
@@ -201,13 +120,6 @@ def main() -> None:
     if args.save_all_images:
         pred_dir = output_dir / f"{args.split}_predictions"
         print(f"All split images with boxes saved under: {pred_dir.resolve()}")
-
-    print(
-        f"Flat exports: {output_dir.resolve() / 'results.png'}, "
-        f"{output_dir.resolve() / 'confusion_matrix.png'}, "
-        f"{output_dir.resolve() / 'results.csv'}, "
-        f"{output_dir.resolve() / 'map50_summary.txt'}"
-    )
 
 
 if __name__ == "__main__":
