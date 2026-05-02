@@ -1,0 +1,45 @@
+sensor_fusion_node:
+  ros__parameters:
+    publish_rate_hz: 20.0
+    gps_fix_topic: "/gps/fix"
+    integrity_topic: "/gps/integrity_state"
+    vo_topic: "/vo/pose"
+    lane_topic: "/lane_position"
+    landmark_obs_topic: "/landmark/observations"
+    enable_ghost_matching: false
+    ghost_image_topic: "/camera/image_raw"
+    landmark_sqlite: "/tmp/gps_visual_b_landmarks.sqlite"
+    yolo_onnx_path: ""
+    camera_fx: 900.0
+    camera_fy: 900.0
+    camera_cx: 640.0
+    camera_cy: 360.0
+
+visual_odometry_node:
+  ros__parameters:
+    fx: 900.0
+    fy: 900.0
+    cx: 640.0
+    cy: 360.0
+    image_topic: "/camera/image_raw"
+    wheel_topic: "/vehicle/wheel_twist"
+    imu_topic: "/imu/data"
+
+lane_detection_node:
+  ros__parameters:
+    image_topic: "/camera/image_raw"
+    low_light_enhance: true
+    ipm_homography_npz: ""
+
+gps_monitor_node:
+  ros__parameters:
+    fix_topic: "/gps/fix"
+    metrics_topic: "/gps/metrics"
+
+landmark_db_node:
+  ros__parameters:
+    sqlite_path: "/tmp/gps_visual_b_landmarks.sqlite"
+    topic_add: "/landmark/add"
+    topic_add_result: "/landmark/add_result"
+    topic_query: "/landmark/query"
+    topic_query_result: "/landmark/query_result"

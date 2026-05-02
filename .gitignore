@@ -1,37 +1,46 @@
-# Dùng khi `git init` tại thư mục workspace cha (bao gồm `pothole/`).
-# Nếu repo chỉ là `pothole/`, bỏ qua file này — chỉ cần `pothole/.gitignore`.
+# ROS 2 Python workspace (gps_system) — colcon + Python artefacts
 
-/.cursor/
+# --- colcon / ROS 2 workspace (never commit) ---
+build/
+install/
+log/
 
-pothole/outputs/
-pothole/wandb/
+# --- Python bytecode & packaging ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+*.egg
+dist/
+wheels/
+pip-wheel-metadata/
 
-# Giống pothole/.gitignore: bỏ qua runs nhưng cho phép hai file báo cáo train.
-pothole/runs/*
-!pothole/runs/detect/
+# --- large binaries & datasets ---
+*.onnx
+*.pt
+*.pth
+*.engine
+*.trt
+*.bag
+*.db3
 
-pothole/runs/detect/*
-!pothole/runs/detect/runs/
+# --- IDE & OS ---
+.idea/
+.vscode/
+*.swp
+*~
+.DS_Store
+Thumbs.db
 
-pothole/runs/detect/runs/*
-!pothole/runs/detect/runs/pothole/
+# --- pytest / coverage ---
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
 
-pothole/runs/detect/runs/pothole/*
-!pothole/runs/detect/runs/pothole/train_runs/
-
-pothole/runs/detect/runs/pothole/train_runs/*
-!pothole/runs/detect/runs/pothole/train_runs/results.csv
-!pothole/runs/detect/runs/pothole/train_runs/results.png
-pothole/Depth-Anything-V2/
-pothole/**/*.pt
-pothole/**/*.pth
-pothole/**/*.mp4
-pothole/**/*.mov
-pothole/**/*.avi
-
-**/__pycache__/
-**/.venv/
-**/ARCHITECTURE.md
-**/FAILURE_ANALYSIS.md
-**/test.md
-architecture.drawio
+# --- optional: local venv inside workspace (uncomment if used) ---
+# .venv/
