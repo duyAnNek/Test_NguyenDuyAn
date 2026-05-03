@@ -133,13 +133,6 @@ Launch khởi chạy các node: `landmark_db_node`, `visual_odometry_node`, `lan
 
 ---
 
-## Tài liệu & giấy phép
-
-- **Báo cáo kỹ thuật:** `AI_ENGINEER_TECHNICAL_REPORT.tex` — pipeline Part A/B, failure analysis, hướng tối ưu/sáng tạo.
-- **ROS package `gps_visual`:** license khai báo trong [`package.xml`](gps_system/src/gps_visual/package.xml) (Apache-2.0). Phần `pothole` không gắn license riêng trong repo này — bổ sung nếu bạn công khai rộng.
-
----
-
 ## Gợi ý roadmap ngắn
 
 - Quantize INT8 depth/detector; tách thread depth; hiệu chuẩn camera ngoại tại chặt chẽ hơn template.
